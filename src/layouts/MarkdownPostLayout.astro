@@ -10,7 +10,7 @@ const { frontmatter } = Astro.props;
   <p>Written by: {frontmatter.author}</p>
   <img src={frontmatter.image.url} width="300" alt={frontmatter.image.alt} />
   <div class="tags-list">
-    {frontmatter.tags.map((tag: string) => <p>{tag}</p>)}
+    {frontmatter.tags.map((tag: string) => <a href={`/tags/${tag}`}>{tag}</a>)}
   </div>
   <slot />
   <style>
