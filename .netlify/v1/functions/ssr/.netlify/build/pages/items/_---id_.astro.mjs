@@ -1,5 +1,5 @@
 import { b as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead, u as unescapeHTML } from '../../chunks/astro/server_CuNeil3z.mjs';
-import { $ as $$Image } from '../../chunks/_astro_assets_wMTGbqVO.mjs';
+import { $ as $$Image } from '../../chunks/_astro_assets_C3HXokiV.mjs';
 import { $ as $$MarkdownPostLayout } from '../../chunks/MarkdownPostLayout_BqcjCeKD.mjs';
 import { getItemDataById } from '../../chunks/itemsUtils_Cm6q1r7X.mjs';
 export { renderers } from '../../renderers.mjs';
