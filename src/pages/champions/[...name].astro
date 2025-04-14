@@ -29,11 +29,7 @@ const skins = champion.skins.map((skin: any) => ({
 ---
 
 <MarkdownPostLayout frontmatter={champion}>
-  <SkinCarousel client:visible skins={skins} />
-  <div class="flex gap-2 items-baseline">
-    <h1 class="text-xl font-bold">{champion.name}</h1>
-    <p class="text-zinc-300">{champion.title}</p>
-  </div>
+  <SkinCarousel client:visible skins={skins} champion={champion} />
 
   <p>{champion.lore}</p>
 </MarkdownPostLayout>
