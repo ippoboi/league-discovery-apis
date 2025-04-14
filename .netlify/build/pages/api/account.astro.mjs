@@ -39,6 +39,13 @@ async function getAccountData(username, tagLine) {
   };
   return userData;
 }
+async function getAccountMatchHistory(puuid, count = 10) {
+  console.log(puuid);
+  const response = await fetch(`https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=${count}&api_key=${apiKey}`);
+  const data = await response.json();
+  console.log(data);
+  return data;
+}
 async function getProfileDetails(puuid) {
   const latestVersion = await getLatestVersion();
   const response = await fetch(`https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${puuid}?api_key=${apiKey}`);
@@ -67,6 +74,58 @@ async function getTop3Masteries(puuid) {
   });
   return top3ChampionsWithMastery;
 }
+async function getMatchDetails(matchId) {
+  const response = await fetch(`https://europe.api.riotgames.com/lol/match/v5/matches/${matchId}?api_key=${apiKey}`);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch match details: ${response.statusText}`);
+  }
+  return await response.json();
+}
+async function getMatchesWithDetails(puuid, count = 10) {
+  const matchIds = await getAccountMatchHistory(puuid, count);
+  console.log("match ids", matchIds);
+  const matchDetailsPromises = matchIds.map((matchId) => getMatchDetails(matchId));
+  const matchesData = await Promise.all(matchDetailsPromises);
+  console.log("matches data", matchesData);
+  const processedMatches = matchesData.map((match) => {
+    const participant = match.info.participants.find((p) => p.puuid === puuid);
+    if (!participant) {
+      console.warn(`Participant with puuid ${puuid} not found in match ${match.metadata.matchId}`);
+      return null;
+    }
+    return {
+      matchId: match.metadata.matchId,
+      gameCreation: match.info.gameCreation,
+      gameDuration: match.info.gameDuration,
+      gameMode: match.info.gameMode,
+      queueId: match.info.queueId,
+      playerData: {
+        championId: participant.championId,
+        championName: participant.championName,
+        kills: participant.kills,
+        deaths: participant.deaths,
+        assists: participant.assists,
+        win: participant.win,
+        position: participant.teamPosition || participant.lane || "UNKNOWN",
+        champLevel: participant.champLevel,
+        totalMinionsKilled: participant.totalMinionsKilled,
+        neutralMinionsKilled: participant.neutralMinionsKilled,
+        goldEarned: participant.goldEarned,
+        visionScore: participant.visionScore,
+        totalDamageDealtToChampions: participant.totalDamageDealtToChampions,
+        summoner1Id: participant.summoner1Id,
+        summoner2Id: participant.summoner2Id,
+        items: [participant.item0, participant.item1, participant.item2, participant.item3, participant.item4, participant.item5, participant.item6]
+      },
+      teams: match.info.teams.map((team) => ({
+        teamId: team.teamId,
+        win: team.win,
+        bans: team.bans
+      }))
+    };
+  }).filter((match) => match !== null);
+  return processedMatches;
+}
 
 const prerender = false;
 const POST = async ({
@@ -85,14 +144,19 @@ const POST = async ({
       });
     }
     const accountData = await getAccountData(username, tagLine);
+    const matchHistory = await getMatchesWithDetails(accountData.puuid, 10);
     return new Response(JSON.stringify({
       success: true,
       message: "Account information processed successfully",
-      data: accountData
+      data: {
+        ...accountData,
+        matchHistory
+      }
     }), {
       status: 200
     });
   } catch (error) {
+    console.error("API error:", error);
     return new Response(JSON.stringify({
       success: false,
       message: error instanceof Error ? error.message : "An unknown error occurred"

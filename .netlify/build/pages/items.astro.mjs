@@ -1,6 +1,6 @@
 import { b as createAstro, c as createComponent, m as maybeRenderHead, d as addAttribute, r as renderComponent, a as renderTemplate } from '../chunks/astro/server_CuNeil3z.mjs';
 import { $ as $$Image } from '../chunks/_astro_assets_C3HXokiV.mjs';
-import { $ as $$BaseLayout } from '../chunks/BaseLayout_CgMmNT_7.mjs';
+import { $ as $$BaseLayout } from '../chunks/BaseLayout_O8TgNt76.mjs';
 /* empty css                                  */
 import { getItemData } from '../chunks/itemsUtils_Cm6q1r7X.mjs';
 export { renderers } from '../renderers.mjs';

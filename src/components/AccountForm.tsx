@@ -1,5 +1,5 @@
 import { useState } from 'preact/hooks';
-import type { ChampionMastery } from '../utils/accountUtils';
+import type { ChampionMastery, ProcessedMatch } from '../utils/accountUtils';
 
 type UserProfile = {
   puuid: string;
@@ -11,6 +11,7 @@ type UserProfile = {
     championName?: string;
     championImage?: string;
   })[];
+  matchHistory?: ProcessedMatch[];
 };
 
 export default function AccountForm() {
@@ -136,7 +137,7 @@ function UserProfileDisplay({ profile }: { profile: UserProfile }) {
       </div>
 
       {/* Champion Masteries */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-b-lg p-6">
+      <div className="bg-zinc-900 border border-zinc-800 rounded-none p-6">
         <div className="border-t border-zinc-800 pt-4 mt-2">
           <h3 className="text-lg font-medium text-zinc-300 mb-4">Champion Mastery</h3>
 
@@ -148,6 +149,23 @@ function UserProfileDisplay({ profile }: { profile: UserProfile }) {
             </div>
           ) : (
             <p className="text-zinc-500">No champion mastery data available.</p>
+          )}
+        </div>
+      </div>
+
+      {/* Match History */}
+      <div className="bg-zinc-900 border border-zinc-800 border-t-0 rounded-b-lg p-6">
+        <div className="border-t border-zinc-800 pt-4 mt-2">
+          <h3 className="text-lg font-medium text-zinc-300 mb-4">Recent Matches</h3>
+
+          {profile.matchHistory && profile.matchHistory.length > 0 ? (
+            <div className="flex flex-col gap-4">
+              {profile.matchHistory.map((match, index) => (
+                <MatchHistoryCard key={match.matchId} match={match} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-zinc-500">No match history data available.</p>
           )}
         </div>
       </div>
@@ -246,6 +264,134 @@ function ChampionMasteryCard({
         )}
 
         <div className="text-zinc-400 text-xs mt-3">Last played: {lastPlayed}</div>
+      </div>
+    </div>
+  );
+}
+
+function MatchHistoryCard({ match }: { match: ProcessedMatch }) {
+  // Format game duration from seconds to minutes:seconds
+  const formatGameDuration = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+  };
+
+  // Format date
+  const formatGameDate = (timestamp: number) => {
+    const date = new Date(timestamp);
+    return date.toLocaleDateString();
+  };
+
+  // Calculate KDA
+  const kda = (
+    (match.playerData.kills + match.playerData.assists) /
+    (match.playerData.deaths || 1)
+  ).toFixed(2);
+
+  // Calculate CS per minute
+  const totalCS = match.playerData.totalMinionsKilled + match.playerData.neutralMinionsKilled;
+  const csPerMin = (totalCS / (match.gameDuration / 60)).toFixed(1);
+
+  // Game result color
+  const resultColor = match.playerData.win ? 'text-emerald-500' : 'text-red-500';
+  const resultBg = match.playerData.win ? 'bg-emerald-900/20' : 'bg-red-900/20';
+  const resultBorder = match.playerData.win ? 'border-emerald-800' : 'border-red-800';
+
+  // Determine game mode display name
+  const getGameModeName = (mode: string, queueId: number) => {
+    if (mode === 'CLASSIC') {
+      if (queueId === 420) return 'Ranked Solo';
+      if (queueId === 440) return 'Ranked Flex';
+      if (queueId === 400) return 'Normal Draft';
+      if (queueId === 430) return 'Normal Blind';
+    }
+    if (mode === 'ARAM') return 'ARAM';
+    if (mode === 'URF' || mode === 'ARURF') return 'URF';
+    return mode;
+  };
+
+  return (
+    <div className={`bg-zinc-800 border ${resultBorder} rounded-lg overflow-hidden`}>
+      <div className="flex flex-col md:flex-row">
+        {/* Game info section */}
+        <div className={`p-4 ${resultBg} flex flex-col justify-center items-center md:w-1/5`}>
+          <div className={`text-sm uppercase font-bold ${resultColor}`}>
+            {match.playerData.win ? 'Victory' : 'Defeat'}
+          </div>
+          <div className="text-zinc-400 text-xs mt-1">
+            {getGameModeName(match.gameMode, match.queueId)}
+          </div>
+          <div className="text-zinc-400 text-xs mt-1">{formatGameDuration(match.gameDuration)}</div>
+          <div className="text-zinc-500 text-xs mt-1">{formatGameDate(match.gameCreation)}</div>
+        </div>
+
+        {/* Champion and stats section */}
+        <div className="p-4 flex flex-1 flex-col md:flex-row">
+          {/* Champion info */}
+          <div className="flex items-center md:w-1/4">
+            <div className="relative">
+              <img
+                src={`https://ddragon.leagueoflegends.com/cdn/15.7.1/img/champion/${match.playerData.championName}.png`}
+                alt={match.playerData.championName}
+                className="w-16 h-16 rounded-md border border-zinc-700"
+                onError={(e) => {
+                  const target = e.currentTarget as HTMLImageElement;
+                  target.src =
+                    'https://ddragon.leagueoflegends.com/cdn/13.10.1/img/champion/default.png';
+                  target.className = 'w-16 h-16 rounded-md border border-zinc-700 opacity-50';
+                }}
+              />
+              <div className="absolute bottom-0 right-0 bg-zinc-900/80 text-xs text-white px-1 rounded-tl-sm border border-zinc-700">
+                {match.playerData.champLevel}
+              </div>
+            </div>
+            <div className="ml-3">
+              <div className="text-white">{match.playerData.championName}</div>
+              <div className="text-zinc-400 text-xs">{match.playerData.position}</div>
+            </div>
+          </div>
+
+          {/* KDA stats */}
+          <div className="mt-4 md:mt-0 md:ml-6 flex flex-col justify-center md:w-1/4">
+            <div className="flex items-center">
+              <span className="text-white">{match.playerData.kills}</span>
+              <span className="text-zinc-600 mx-1">/</span>
+              <span className="text-red-500">{match.playerData.deaths}</span>
+              <span className="text-zinc-600 mx-1">/</span>
+              <span className="text-blue-400">{match.playerData.assists}</span>
+            </div>
+            <div className="text-zinc-400 text-xs mt-1">
+              <span className="text-amber-400">{kda}</span> KDA
+            </div>
+            <div className="text-zinc-400 text-xs mt-1">
+              {totalCS} CS ({csPerMin}/min)
+            </div>
+          </div>
+
+          {/* Items */}
+          <div className="mt-4 md:mt-0 md:ml-auto flex flex-wrap gap-1 items-center justify-end">
+            {match.playerData.items
+              .filter((item) => item > 0)
+              .map((itemId, idx) => (
+                <div key={idx} className="relative">
+                  <img
+                    src={`https://ddragon.leagueoflegends.com/cdn/13.10.1/img/item/${itemId}.png`}
+                    alt={`Item ${itemId}`}
+                    className="w-8 h-8 rounded-sm border border-zinc-700"
+                    onError={(e) => {
+                      const target = e.currentTarget as HTMLImageElement;
+                      target.className = 'w-8 h-8 rounded-sm border border-zinc-700 bg-zinc-700';
+                      target.src = '';
+                    }}
+                  />
+                </div>
+              ))}
+            {match.playerData.items.filter((item) => item > 0).length === 0 && (
+              <div className="text-zinc-500 text-xs">No items</div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

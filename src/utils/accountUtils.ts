@@ -79,13 +79,14 @@ export async function getAccountData(username: string, tagLine: string) {
   return userData;
 }
 
-export async function getAccountMatchHistory(puuid: string) {
+export async function getAccountMatchHistory(puuid: string, count: number = 10) {
   console.log(puuid);
   const response = await fetch(
-    `https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?api_key=${apiKey}`
+    `https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=${count}&api_key=${apiKey}`
   );
 
   const data = await response.json();
+  console.log(data);
   return data;
 }
 
@@ -141,4 +142,184 @@ export async function getTop3Masteries(
   });
 
   return top3ChampionsWithMastery;
+}
+
+export async function getMatchDetails(matchId: string) {
+  const response = await fetch(
+    `https://europe.api.riotgames.com/lol/match/v5/matches/${matchId}?api_key=${apiKey}`
+  );
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch match details: ${response.statusText}`);
+  }
+
+  return await response.json();
+}
+
+// Match data types
+export type MatchMetadata = {
+  dataVersion: string;
+  matchId: string;
+  participants: string[]; // Array of puuids
+};
+
+export type MatchInfo = {
+  endOfGameResult: string;
+  gameCreation: number;
+  gameDuration: number;
+  gameEndTimestamp: number;
+  gameId: number;
+  gameMode: string;
+  gameName: string;
+  gameStartTimestamp: number;
+  gameType: string;
+  gameVersion: string;
+  mapId: number;
+  participants: MatchParticipant[];
+  platformId: string;
+  queueId: number;
+  teams: MatchTeam[];
+  tournamentCode: string;
+};
+
+export type MatchParticipant = {
+  puuid: string;
+  championId: number;
+  championName: string;
+  kills: number;
+  deaths: number;
+  assists: number;
+  win: boolean;
+  teamPosition?: string;
+  lane?: string;
+  champLevel: number;
+  totalMinionsKilled: number;
+  neutralMinionsKilled: number;
+  goldEarned: number;
+  visionScore: number;
+  summoner1Id: number;
+  summoner2Id: number;
+  item0: number;
+  item1: number;
+  item2: number;
+  item3: number;
+  item4: number;
+  item5: number;
+  item6: number;
+  totalDamageDealtToChampions: number;
+  challenges?: Record<string, number>;
+};
+
+export type MatchTeam = {
+  teamId: number;
+  win: boolean;
+  bans: any[];
+  objectives: any;
+};
+
+export type MatchData = {
+  metadata: MatchMetadata;
+  info: MatchInfo;
+};
+
+export type ProcessedMatch = {
+  matchId: string;
+  gameCreation: number;
+  gameDuration: number;
+  gameMode: string;
+  queueId: number;
+  playerData: {
+    championId: number;
+    championName: string;
+    kills: number;
+    deaths: number;
+    assists: number;
+    win: boolean;
+    position: string;
+    champLevel: number;
+    totalMinionsKilled: number;
+    neutralMinionsKilled: number;
+    goldEarned: number;
+    visionScore: number;
+    totalDamageDealtToChampions: number;
+    summoner1Id: number;
+    summoner2Id: number;
+    items: number[];
+  };
+  teams: {
+    teamId: number;
+    win: boolean;
+    bans: any[];
+  }[];
+};
+
+export async function getMatchesWithDetails(
+  puuid: string,
+  count: number = 10
+): Promise<ProcessedMatch[]> {
+  const matchIds = await getAccountMatchHistory(puuid, count);
+  console.log('match ids', matchIds);
+
+  // Fetch match details for each match ID
+  const matchDetailsPromises = matchIds.map((matchId: string) => getMatchDetails(matchId));
+
+  // Wait for all promises to resolve
+  const matchesData = await Promise.all(matchDetailsPromises);
+  console.log('matches data', matchesData);
+
+  // Process match data to extract relevant information
+  const processedMatches = matchesData
+    .map((match: MatchData) => {
+      // Find the participant that matches the puuid
+      const participant = match.info.participants.find((p) => p.puuid === puuid);
+
+      if (!participant) {
+        console.warn(
+          `Participant with puuid ${puuid} not found in match ${match.metadata.matchId}`
+        );
+        return null;
+      }
+
+      return {
+        matchId: match.metadata.matchId,
+        gameCreation: match.info.gameCreation,
+        gameDuration: match.info.gameDuration,
+        gameMode: match.info.gameMode,
+        queueId: match.info.queueId,
+        playerData: {
+          championId: participant.championId,
+          championName: participant.championName,
+          kills: participant.kills,
+          deaths: participant.deaths,
+          assists: participant.assists,
+          win: participant.win,
+          position: participant.teamPosition || participant.lane || 'UNKNOWN',
+          champLevel: participant.champLevel,
+          totalMinionsKilled: participant.totalMinionsKilled,
+          neutralMinionsKilled: participant.neutralMinionsKilled,
+          goldEarned: participant.goldEarned,
+          visionScore: participant.visionScore,
+          totalDamageDealtToChampions: participant.totalDamageDealtToChampions,
+          summoner1Id: participant.summoner1Id,
+          summoner2Id: participant.summoner2Id,
+          items: [
+            participant.item0,
+            participant.item1,
+            participant.item2,
+            participant.item3,
+            participant.item4,
+            participant.item5,
+            participant.item6,
+          ],
+        },
+        teams: match.info.teams.map((team) => ({
+          teamId: team.teamId,
+          win: team.win,
+          bans: team.bans,
+        })),
+      };
+    })
+    .filter((match): match is ProcessedMatch => match !== null);
+
+  return processedMatches;
 }

@@ -1,5 +1,5 @@
 import { c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead } from '../chunks/astro/server_CuNeil3z.mjs';
-import { $ as $$BaseLayout } from '../chunks/BaseLayout_CgMmNT_7.mjs';
+import { $ as $$BaseLayout } from '../chunks/BaseLayout_O8TgNt76.mjs';
 export { renderers } from '../renderers.mjs';
 
 const $$Index = createComponent(($$result, $$props, $$slots) => {

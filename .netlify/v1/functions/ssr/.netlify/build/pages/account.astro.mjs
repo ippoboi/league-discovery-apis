@@ -1,5 +1,5 @@
 import { c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead } from '../chunks/astro/server_CuNeil3z.mjs';
-import { $ as $$BaseLayout } from '../chunks/BaseLayout_CgMmNT_7.mjs';
+import { $ as $$BaseLayout } from '../chunks/BaseLayout_O8TgNt76.mjs';
 import { useState } from 'preact/hooks';
 import { jsx, jsxs } from 'preact/jsx-runtime';
 /* empty css                                  */
@@ -118,7 +118,7 @@ function UserProfileDisplay({
         })
       })]
     }), jsx("div", {
-      className: "bg-zinc-900 border border-zinc-800 rounded-b-lg p-6",
+      className: "bg-zinc-900 border border-zinc-800 rounded-none p-6",
       children: jsxs("div", {
         className: "border-t border-zinc-800 pt-4 mt-2",
         children: [jsx("h3", {
@@ -133,6 +133,23 @@ function UserProfileDisplay({
         }) : jsx("p", {
           className: "text-zinc-500",
           children: "No champion mastery data available."
+        })]
+      })
+    }), jsx("div", {
+      className: "bg-zinc-900 border border-zinc-800 border-t-0 rounded-b-lg p-6",
+      children: jsxs("div", {
+        className: "border-t border-zinc-800 pt-4 mt-2",
+        children: [jsx("h3", {
+          className: "text-lg font-medium text-zinc-300 mb-4",
+          children: "Recent Matches"
+        }), profile.matchHistory && profile.matchHistory.length > 0 ? jsx("div", {
+          className: "flex flex-col gap-4",
+          children: profile.matchHistory.map((match, index) => jsx(MatchHistoryCard, {
+            match
+          }, match.matchId))
+        }) : jsx("p", {
+          className: "text-zinc-500",
+          children: "No match history data available."
         })]
       })
     })]
@@ -216,6 +233,136 @@ function ChampionMasteryCard({
         children: ["Last played: ", lastPlayed]
       })]
     })]
+  });
+}
+function MatchHistoryCard({
+  match
+}) {
+  const formatGameDuration = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  };
+  const formatGameDate = (timestamp) => {
+    const date = new Date(timestamp);
+    return date.toLocaleDateString();
+  };
+  const kda = ((match.playerData.kills + match.playerData.assists) / (match.playerData.deaths || 1)).toFixed(2);
+  const totalCS = match.playerData.totalMinionsKilled + match.playerData.neutralMinionsKilled;
+  const csPerMin = (totalCS / (match.gameDuration / 60)).toFixed(1);
+  const resultColor = match.playerData.win ? "text-emerald-500" : "text-red-500";
+  const resultBg = match.playerData.win ? "bg-emerald-900/20" : "bg-red-900/20";
+  const resultBorder = match.playerData.win ? "border-emerald-800" : "border-red-800";
+  const getGameModeName = (mode, queueId) => {
+    if (mode === "CLASSIC") {
+      if (queueId === 420) return "Ranked Solo";
+      if (queueId === 440) return "Ranked Flex";
+      if (queueId === 400) return "Normal Draft";
+      if (queueId === 430) return "Normal Blind";
+    }
+    if (mode === "ARAM") return "ARAM";
+    if (mode === "URF" || mode === "ARURF") return "URF";
+    return mode;
+  };
+  return jsx("div", {
+    className: `bg-zinc-800 border ${resultBorder} rounded-lg overflow-hidden`,
+    children: jsxs("div", {
+      className: "flex flex-col md:flex-row",
+      children: [jsxs("div", {
+        className: `p-4 ${resultBg} flex flex-col justify-center items-center md:w-1/5`,
+        children: [jsx("div", {
+          className: `text-sm uppercase font-bold ${resultColor}`,
+          children: match.playerData.win ? "Victory" : "Defeat"
+        }), jsx("div", {
+          className: "text-zinc-400 text-xs mt-1",
+          children: getGameModeName(match.gameMode, match.queueId)
+        }), jsx("div", {
+          className: "text-zinc-400 text-xs mt-1",
+          children: formatGameDuration(match.gameDuration)
+        }), jsx("div", {
+          className: "text-zinc-500 text-xs mt-1",
+          children: formatGameDate(match.gameCreation)
+        })]
+      }), jsxs("div", {
+        className: "p-4 flex flex-1 flex-col md:flex-row",
+        children: [jsxs("div", {
+          className: "flex items-center md:w-1/4",
+          children: [jsxs("div", {
+            className: "relative",
+            children: [jsx("img", {
+              src: `https://ddragon.leagueoflegends.com/cdn/15.7.1/img/champion/${match.playerData.championName}.png`,
+              alt: match.playerData.championName,
+              className: "w-16 h-16 rounded-md border border-zinc-700",
+              onError: (e) => {
+                const target = e.currentTarget;
+                target.src = "https://ddragon.leagueoflegends.com/cdn/13.10.1/img/champion/default.png";
+                target.className = "w-16 h-16 rounded-md border border-zinc-700 opacity-50";
+              }
+            }), jsx("div", {
+              className: "absolute bottom-0 right-0 bg-zinc-900/80 text-xs text-white px-1 rounded-tl-sm border border-zinc-700",
+              children: match.playerData.champLevel
+            })]
+          }), jsxs("div", {
+            className: "ml-3",
+            children: [jsx("div", {
+              className: "text-white",
+              children: match.playerData.championName
+            }), jsx("div", {
+              className: "text-zinc-400 text-xs",
+              children: match.playerData.position
+            })]
+          })]
+        }), jsxs("div", {
+          className: "mt-4 md:mt-0 md:ml-6 flex flex-col justify-center md:w-1/4",
+          children: [jsxs("div", {
+            className: "flex items-center",
+            children: [jsx("span", {
+              className: "text-white",
+              children: match.playerData.kills
+            }), jsx("span", {
+              className: "text-zinc-600 mx-1",
+              children: "/"
+            }), jsx("span", {
+              className: "text-red-500",
+              children: match.playerData.deaths
+            }), jsx("span", {
+              className: "text-zinc-600 mx-1",
+              children: "/"
+            }), jsx("span", {
+              className: "text-blue-400",
+              children: match.playerData.assists
+            })]
+          }), jsxs("div", {
+            className: "text-zinc-400 text-xs mt-1",
+            children: [jsx("span", {
+              className: "text-amber-400",
+              children: kda
+            }), " KDA"]
+          }), jsxs("div", {
+            className: "text-zinc-400 text-xs mt-1",
+            children: [totalCS, " CS (", csPerMin, "/min)"]
+          })]
+        }), jsxs("div", {
+          className: "mt-4 md:mt-0 md:ml-auto flex flex-wrap gap-1 items-center justify-end",
+          children: [match.playerData.items.filter((item) => item > 0).map((itemId, idx) => jsx("div", {
+            className: "relative",
+            children: jsx("img", {
+              src: `https://ddragon.leagueoflegends.com/cdn/13.10.1/img/item/${itemId}.png`,
+              alt: `Item ${itemId}`,
+              className: "w-8 h-8 rounded-sm border border-zinc-700",
+              onError: (e) => {
+                const target = e.currentTarget;
+                target.className = "w-8 h-8 rounded-sm border border-zinc-700 bg-zinc-700";
+                target.src = "";
+              }
+            })
+          }, idx)), match.playerData.items.filter((item) => item > 0).length === 0 && jsx("div", {
+            className: "text-zinc-500 text-xs",
+            children: "No items"
+          })]
+        })]
+      })]
+    })
   });
 }
 
