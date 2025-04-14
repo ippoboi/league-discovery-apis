@@ -10,6 +10,10 @@ const championsData = await getChampionData();
 
 <BaseLayout pageTitle={pageTitle}>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 pt-22 p-4">
-    {Object.values(championsData.data).map((champion: any) => <ChampionCard data={champion} />)}
+    {
+      Object.values(championsData.data).map((champion: any, index: number) => (
+        <ChampionCard data={champion} index={index} />
+      ))
+    }
   </div>
 </BaseLayout>

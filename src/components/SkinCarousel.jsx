@@ -29,7 +29,7 @@ export default function SkinCarousel({ skins, champion }) {
                   alt={skin.name}
                   width={100}
                   height={100}
-                  class="rounded-md  min-w-[100px]"
+                  class="rounded-md min-w-[150px] max-h-[100px] object-cover"
                   onClick={() => setCurrentSkin(skin)}
                 />
               </div>
