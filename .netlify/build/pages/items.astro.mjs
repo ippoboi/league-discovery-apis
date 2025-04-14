@@ -1,6 +1,6 @@
 import { b as createAstro, c as createComponent, m as maybeRenderHead, d as addAttribute, r as renderComponent, a as renderTemplate } from '../chunks/astro/server_CuNeil3z.mjs';
 import { $ as $$Image } from '../chunks/_astro_assets_C3HXokiV.mjs';
-import { $ as $$BaseLayout } from '../chunks/BaseLayout_Bvjw-BrD.mjs';
+import { $ as $$BaseLayout } from '../chunks/BaseLayout_CgMmNT_7.mjs';
 /* empty css                                  */
 import { getItemData } from '../chunks/itemsUtils_Cm6q1r7X.mjs';
 export { renderers } from '../renderers.mjs';
@@ -12,7 +12,7 @@ const $$ItemsCard = createComponent(($$result, $$props, $$slots) => {
   const { data, index = 0 } = Astro2.props;
   const imageUrl = `https://ddragon.leagueoflegends.com/cdn/15.7.1/img/item/${data.image.full}`;
   const loadingStrategy = index < 200 ? "eager" : "lazy";
-  return renderTemplate`${maybeRenderHead()}<a${addAttribute(`/items/${data.id}`, "href")} class="relative overflow-hidden rounded-lg border border-zinc-900"> ${renderComponent($$result, "Image", $$Image, { "src": imageUrl, "alt": data.name + " splash art", "height": 1e3, "width": 1e3, "class": "hover:scale-105 transition-all duration-300 grayscale-75 hover:grayscale-0", "loading": loadingStrategy })} </a>`;
+  return renderTemplate`${maybeRenderHead()}<a${addAttribute(`/items/${data.id}`, "href")} class="relative overflow-hidden rounded-lg border border-zinc-900"> ${renderComponent($$result, "Image", $$Image, { "src": imageUrl, "alt": data.name + " splash art", "height": 1e3, "width": 1e3, "class": "lg:hover:scale-105 lg:transition-all lg:duration-300 lg:grayscale-75 lg:hover:grayscale-0", "loading": loadingStrategy })} </a>`;
 }, "/Users/dimitar/Desktop/Software_Dev/astro-projects/league-discovery-apis/src/components/ItemsCard.astro", void 0);
 
 const $$Index = createComponent(async ($$result, $$props, $$slots) => {

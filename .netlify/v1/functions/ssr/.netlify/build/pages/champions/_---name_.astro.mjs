@@ -1,8 +1,8 @@
 import { b as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead } from '../../chunks/astro/server_CuNeil3z.mjs';
-import { $ as $$MarkdownPostLayout } from '../../chunks/MarkdownPostLayout_BqcjCeKD.mjs';
-import { a as getChampionDataByChampionName, g as getChampionData } from '../../chunks/championUtils_BJNrzxS7.mjs';
 import { useState } from 'preact/hooks';
 import { jsx, jsxs } from 'preact/jsx-runtime';
+import { $ as $$MarkdownPostLayout } from '../../chunks/MarkdownPostLayout_DivmaCWf.mjs';
+import { a as getChampionDataByChampionName, g as getChampionData } from '../../chunks/championUtils_BJNrzxS7.mjs';
 export { renderers } from '../../renderers.mjs';
 
 function SkinCarousel({

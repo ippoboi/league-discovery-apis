@@ -1,9 +1,8 @@
 ---
-import { Image } from 'astro:assets';
-import MarkdownPostLayout from '../../layouts/MarkdownPostLayout.astro';
-import { getChampionData, getChampionDataByChampionName } from '../../utils/championUtils';
 import SkinCarousel from '../../components/SkinCarousel';
 import SpellDisplay from '../../components/SpellDisplay';
+import MarkdownPostLayout from '../../layouts/MarkdownPostLayout.astro';
+import { getChampionData, getChampionDataByChampionName } from '../../utils/championUtils';
 
 export async function getStaticPaths() {
   const allChampionsData = await getChampionData();
