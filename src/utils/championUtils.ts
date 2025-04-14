@@ -1,17 +1,8 @@
 // Add cache variables at the top
-let latestVersionCache: string | null = null;
-let championDataCache: any | null = null;
 
-export async function getLatestVersion() {
-  // Check cache first
-  if (latestVersionCache) {
-    return latestVersionCache;
-  }
-  const response = await fetch('https://ddragon.leagueoflegends.com/api/versions.json');
-  const versions = await response.json();
-  latestVersionCache = versions[0]; // Store in cache
-  return latestVersionCache;
-}
+import { getLatestVersion } from './latestVersion';
+
+let championDataCache: any | null = null;
 
 export async function getChampionData() {
   // Check cache first

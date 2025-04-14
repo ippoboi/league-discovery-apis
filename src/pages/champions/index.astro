@@ -1,0 +1,15 @@
+---
+import ChampionCard from '../../components/ChampionCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/global.css';
+import { getChampionData } from '../../utils/championUtils';
+
+const pageTitle = 'Champions';
+const championsData = await getChampionData();
+---
+
+<BaseLayout pageTitle={pageTitle}>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 pt-22">
+    {Object.values(championsData.data).map((champion: any) => <ChampionCard data={champion} />)}
+  </div>
+</BaseLayout>

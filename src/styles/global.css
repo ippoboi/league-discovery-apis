@@ -1,12 +1,8 @@
 @import 'tailwindcss';
 
 html {
-  background-color: #f1f5f9;
+  background-color: #09090b;
   font-family: sans-serif;
-}
-
-html.dark {
-  background-color: #0e0e0f;
   color: #fff;
 }
 
@@ -17,8 +13,6 @@ html.dark {
 body {
   margin: 0 auto;
   width: 100%;
-  max-width: 120ch;
-  padding: 1rem;
   line-height: 1.5;
 }
 
@@ -27,8 +21,7 @@ body {
 }
 
 h1 {
-  margin: 1rem 0;
-  font-size: 2.5rem;
+  font-size: 2rem;
 }
 
 /* nav styles */

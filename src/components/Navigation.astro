@@ -1,8 +1,27 @@
 ---
-
+const currentPath = Astro.url.pathname;
 ---
 
 <div class="gap-4 hidden md:flex">
-  <a href="/" class="text-zinc-400 hover:text-zinc-100 transition-colors">Home</a>
-  <a href="/champions" class="text-zinc-400 hover:text-zinc-100 transition-colors">Champions</a>
+  <a
+    href="/"
+    class:list={[
+      'hover:text-zinc-100 transition-colors',
+      currentPath === '/' ? 'text-zinc-100 ' : 'text-zinc-400',
+    ]}>Home</a
+  >
+  <a
+    href="/champions"
+    class:list={[
+      'hover:text-zinc-100 transition-colors',
+      currentPath === '/champions' ? 'text-zinc-100 ' : 'text-zinc-400',
+    ]}>Champions</a
+  >
+  <a
+    href="/items"
+    class:list={[
+      'hover:text-zinc-100 transition-colors',
+      currentPath === '/items' ? 'text-zinc-100 ' : 'text-zinc-400',
+    ]}>Items</a
+  >
 </div>
