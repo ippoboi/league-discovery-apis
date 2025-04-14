@@ -4,7 +4,6 @@ import { Image } from 'astro:assets';
 const { data, index = 0 } = Astro.props;
 
 const imageUrl = `https://ddragon.leagueoflegends.com/cdn/15.7.1/img/item/${data.image.full}`;
-const loadingStrategy = index < 200 ? 'eager' : 'lazy';
 ---
 
 <a href={`/items/${data.id}`} class="relative overflow-hidden rounded-lg border border-zinc-900">
@@ -14,6 +13,5 @@ const loadingStrategy = index < 200 ? 'eager' : 'lazy';
     height={1000}
     width={1000}
     class="lg:hover:scale-105 lg:transition-all lg:duration-300 lg:grayscale-75 lg:hover:grayscale-0"
-    loading={loadingStrategy}
   />
 </a>

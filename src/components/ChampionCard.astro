@@ -4,7 +4,6 @@ import { Image } from 'astro:assets';
 const { data, index = 0 } = Astro.props;
 
 const imageUrl = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${data.id}_0.jpg`;
-const loadingStrategy = index < 16 ? 'eager' : 'lazy';
 ---
 
 <a
@@ -22,6 +21,5 @@ const loadingStrategy = index < 16 ? 'eager' : 'lazy';
     height={720}
     width={540}
     class="lg:hover:scale-105 lg:transition-all lg:duration-300 lg:grayscale-75 lg:hover:grayscale-0"
-    loading={loadingStrategy}
   />
 </a>

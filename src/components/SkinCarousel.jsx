@@ -14,12 +14,12 @@ export default function SkinCarousel({ skins, champion }) {
         />
         <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-900/50 to-transparent"></div>
 
-        <div class="absolute bottom-20 left-4 right-4 lg:left-0 lg:right-0 flex flex-col flex-start gap-2 overflow-hidden max-w-4xl mx-auto">
-          <div class="flex gap-2 items-baseline">
+        <div class="absolute bottom-10 xl:bottom-20 left-4 right-4 lg:left-0 lg:right-0 flex flex-col flex-start gap-2 overflow-hidden max-w-4xl mx-auto">
+          <div class="flex flex-col md:flex-row md:gap-2 items-baseline">
             <h1 class="text-xl font-bold">{champion.name}</h1>
             <p class="text-zinc-300">{champion.title}</p>
           </div>
-          <div class="max-w-4xl mx-auto flex gap-2 items-end overflow-x-auto no-scrollbar">
+          <div class="max-w-2xs md:max-w-[720px] lg:max-w-4xl mx-auto flex gap-2 items-end overflow-x-auto no-scrollbar">
             {skins.map((skin) => (
               <div
                 class={`flex gap-2 rounded-md hover:grayscale-0 border border-transparent transition-all duration-300 items-baseline ${currentSkin.name === skin.name ? 'grayscale-0 border-white' : 'grayscale-75'}`}
