@@ -1,0 +1,40 @@
+---
+import SkinCarousel from '../../components/SkinCarousel';
+import SpellDisplay from '../../components/SpellDisplay';
+import MarkdownPostLayout from '../../layouts/MarkdownPostLayout.astro';
+import { getChampionData, getChampionDataByChampionName } from '../../utils/championUtils';
+
+export async function getStaticPaths() {
+  const allChampionsData = await getChampionData();
+
+  // Return only params, not props
+  return Object.values(allChampionsData.data).map((champion: any) => ({
+    params: { name: champion.id },
+  }));
+}
+
+// Get champion name from URL params
+const championName = Astro.params.name;
+
+// Fetch specific champion data
+const championData = await getChampionDataByChampionName(championName);
+// The API returns data nested under the champion's name, so we need to extract it
+const champion = championData.data[championName];
+
+const skins = champion.skins.map((skin: any) => ({
+  splash: `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion.id}_${skin.num}.jpg`,
+  name: skin.name,
+}));
+---
+
+<MarkdownPostLayout frontmatter={champion}>
+  <SkinCarousel client:visible skins={skins} champion={champion} />
+
+  <div class="flex flex-col gap-10 px-4">
+    <div class="max-w-4xl mx-auto">
+      <p class="text-zinc-400 font-thin">{champion.lore}</p>
+    </div>
+
+    <SpellDisplay client:visible spells={champion.spells} passive={champion.passive} />
+  </div>
+</MarkdownPostLayout>

@@ -1,0 +1,24 @@
+---
+import ItemsCard from '../../components/ItemsCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/global.css';
+import { getItemData } from '../../utils/itemsUtils';
+
+const pageTitle = 'Items';
+const itemsData = await getItemData();
+// Process items for display with their IDs included
+const processedItems = Object.entries(itemsData.data).map(([id, item]: [string, any]) => {
+  return {
+    ...(item as object),
+    id,
+  };
+});
+---
+
+<BaseLayout pageTitle={pageTitle}>
+  <div
+    class="grid grid-cols-4 md:grid-cols-12 lg:grid-cols-16 xl:grid-cols-16 gap-2 p-4 xl:p-32 pt-24"
+  >
+    {processedItems.map((item: any, index: number) => <ItemsCard data={item} index={index} />)}
+  </div>
+</BaseLayout>
