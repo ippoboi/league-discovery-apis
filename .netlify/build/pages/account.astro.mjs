@@ -1,5 +1,5 @@
-import { c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead } from '../chunks/astro/server_Cx1c5JER.mjs';
-import { $ as $$BaseLayout } from '../chunks/BaseLayout_B-DF7i6r.mjs';
+import { c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead } from '../chunks/astro/server_CuNeil3z.mjs';
+import { $ as $$BaseLayout } from '../chunks/BaseLayout_Bvjw-BrD.mjs';
 import { useState } from 'preact/hooks';
 import { jsx, jsxs } from 'preact/jsx-runtime';
 /* empty css                                  */
@@ -91,7 +91,7 @@ function UserProfileDisplay({
       }), jsx("div", {
         className: "absolute bottom-0 left-0 right-0 p-6 z-20",
         children: jsxs("div", {
-          className: "flex items-center",
+          className: "flex flex-col gap-4 lg:gap-0 lg:flex-row lg:items-center",
           children: [jsx("div", {
             className: "flex-shrink-0",
             children: jsx("img", {
@@ -100,7 +100,7 @@ function UserProfileDisplay({
               className: "h-24 w-24 rounded-full border-2 border-zinc-700"
             })
           }), jsxs("div", {
-            className: "ml-6",
+            className: "lg:ml-6",
             children: [jsxs("h2", {
               className: "text-3xl font-bold text-white",
               children: [profile.gameName, jsxs("span", {

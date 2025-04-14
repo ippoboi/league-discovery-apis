@@ -1,5 +1,5 @@
-import { b as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, e as renderSlot } from './astro/server_Cx1c5JER.mjs';
-import { $ as $$BaseLayout } from './BaseLayout_B-DF7i6r.mjs';
+import { b as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, e as renderSlot } from './astro/server_CuNeil3z.mjs';
+import { $ as $$BaseLayout } from './BaseLayout_Bvjw-BrD.mjs';
 /* empty css                          */
 
 const $$Astro = createAstro("https://league-discovery-apis.netlify.app");

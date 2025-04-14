@@ -25,12 +25,16 @@ export default function SpellDisplay({ spells, passive }) {
       <h2 class="text-xl font-medium mb-4">Champion Abilities</h2>
 
       {/* Spell selection buttons */}
-      <div class="flex gap-2 mb-6 overflow-x-auto no-scrollbar">
+      <div class="flex gap-2 mb-6 overflow-x-auto pb-2">
         <button
           onClick={() => handleSpellSelect('passive', passive)}
           class={`flex-shrink-0 border ${activeSpell === 'passive' ? 'border-white grayscale-0' : 'border-zinc-800 grayscale-75'} rounded-md transition-all duration-200 hover:grayscale-0`}
         >
-          <img src={getSpellImageUrl(passive)} alt={passive.name} class="w-14 h-14 rounded-md" />
+          <img
+            src={getSpellImageUrl(passive)}
+            alt={passive.name}
+            class="w-12 h-12 sm:w-14 sm:h-14 rounded-md"
+          />
         </button>
 
         {spells.map((spell, index) => (
@@ -39,28 +43,32 @@ export default function SpellDisplay({ spells, passive }) {
             onClick={() => handleSpellSelect(`spell${index}`, spell)}
             class={`flex-shrink-0 border ${activeSpell === `spell${index}` ? 'border-white grayscale-0' : 'border-zinc-800 grayscale-75'} rounded-md transition-all duration-200 hover:grayscale-0`}
           >
-            <img src={getSpellImageUrl(spell)} alt={spell.name} class="w-14 h-14 rounded-md" />
+            <img
+              src={getSpellImageUrl(spell)}
+              alt={spell.name}
+              class="w-12 h-12 sm:w-14 sm:h-14 rounded-md"
+            />
           </button>
         ))}
       </div>
 
       {/* Spell details */}
       <div class="bg-zinc-900/40 border border-zinc-800 rounded-lg mb-8">
-        <div class="flex items-start gap-6 p-6">
+        <div class="flex flex-col sm:flex-row items-start gap-4 sm:gap-6 p-4 sm:p-6">
           <img
             src={getSpellImageUrl(currentSpell)}
             alt={currentSpell.name}
-            class="w-16 h-16 rounded-md"
+            class="w-14 h-14 sm:w-16 sm:h-16 rounded-md"
           />
 
-          <div>
+          <div class="w-full">
             <div class="flex gap-2 items-baseline mb-2">
-              <h3 class="text-xl font-bold">{currentSpell.name}</h3>
+              <h3 class="text-xl font-bold break-words">{currentSpell.name}</h3>
               {activeSpell !== 'passive' && (
                 <span class="text-zinc-400 text-sm">{currentSpell.id}</span>
               )}
             </div>
-            <p class="text-zinc-400 font-thin mb-4">{currentSpell.description}</p>
+            <p class="text-zinc-400 font-thin mb-4 break-words">{currentSpell.description}</p>
 
             {/* Only show these fields for active spells, not passive */}
             {activeSpell !== 'passive' && (

@@ -1,5 +1,5 @@
 import rss from '@astrojs/rss';
-import { A as AstroError, U as UnknownContentCollectionError, c as createComponent, R as RenderUndefinedEntryError, u as unescapeHTML, a as renderTemplate, f as escape, g as renderUniqueStylesheet, h as renderScriptElement, i as createHeadAndContent, r as renderComponent } from '../chunks/astro/server_Cx1c5JER.mjs';
+import { A as AstroError, U as UnknownContentCollectionError, c as createComponent, R as RenderUndefinedEntryError, u as unescapeHTML, a as renderTemplate, f as escape, g as renderUniqueStylesheet, h as renderScriptElement, i as createHeadAndContent, r as renderComponent } from '../chunks/astro/server_CuNeil3z.mjs';
 import { r as removeBase, i as isRemotePath, V as VALID_INPUT_FORMATS, p as prependForwardSlash } from '../chunks/consts_7OPt-DQA.mjs';
 export { renderers } from '../renderers.mjs';
 
@@ -601,7 +601,7 @@ const CONTENT_LAYER_IMAGE_REGEX = /__ASTRO_IMAGE_="([^"]+)"/g;
 async function updateImageReferencesInBody(html, fileName) {
   const { default: imageAssetMap } = await import('../chunks/content-assets_DleWbedO.mjs');
   const imageObjects = /* @__PURE__ */ new Map();
-  const { getImage } = await import('../chunks/_astro_assets_BUW8d9dh.mjs').then(n => n._);
+  const { getImage } = await import('../chunks/_astro_assets_wMTGbqVO.mjs').then(n => n._);
   for (const [_full, imagePath] of html.matchAll(CONTENT_LAYER_IMAGE_REGEX)) {
     try {
       const decodedImagePath = JSON.parse(imagePath.replaceAll("&#x22;", '"'));

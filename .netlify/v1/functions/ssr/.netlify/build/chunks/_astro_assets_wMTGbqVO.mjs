@@ -1,5 +1,5 @@
 import { j as joinPaths, D as DEFAULT_OUTPUT_FORMAT, i as isRemotePath, a as VALID_SUPPORTED_FORMATS, b as DEFAULT_HASH_PROPS } from './consts_7OPt-DQA.mjs';
-import { A as AstroError, E as ExpectedImage, L as LocalImageUsedWrongly, n as MissingImageDimension, o as UnsupportedImageFormat, I as IncompatibleDescriptorOptions, p as UnsupportedImageConversion, t as toStyleString, q as NoImageMetadata, F as FailedToFetchRemoteImageDimensions, s as ExpectedImageOptions, v as ExpectedNotESMImage, w as InvalidImageService, b as createAstro, c as createComponent, x as ImageMissingAlt, m as maybeRenderHead, d as addAttribute, y as spreadAttributes, a as renderTemplate } from './astro/server_Cx1c5JER.mjs';
+import { A as AstroError, E as ExpectedImage, L as LocalImageUsedWrongly, n as MissingImageDimension, o as UnsupportedImageFormat, I as IncompatibleDescriptorOptions, p as UnsupportedImageConversion, t as toStyleString, q as NoImageMetadata, F as FailedToFetchRemoteImageDimensions, s as ExpectedImageOptions, v as ExpectedNotESMImage, w as InvalidImageService, b as createAstro, c as createComponent, x as ImageMissingAlt, m as maybeRenderHead, d as addAttribute, y as spreadAttributes, a as renderTemplate } from './astro/server_CuNeil3z.mjs';
 
 const DEFAULT_RESOLUTIONS = [
   640,
@@ -1237,7 +1237,7 @@ async function getConfiguredImageService() {
   if (!globalThis?.astroAsset?.imageService) {
     const { default: service } = await import(
       // @ts-expect-error
-      './sharp_DL13G_ed.mjs'
+      './sharp_S9uj1Ruh.mjs'
     ).catch((e) => {
       const error = new AstroError(InvalidImageService);
       error.cause = e;

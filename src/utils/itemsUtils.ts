@@ -25,5 +25,10 @@ export async function getItemData(): Promise<any> {
  */
 export async function getItemDataById(itemId: string): Promise<any | null> {
   const itemData = await getItemData();
-  return itemData.data[itemId] || null;
+
+  if (!itemData || !itemData.data || !itemData.data[itemId]) {
+    return null;
+  }
+
+  return itemData.data[itemId];
 }

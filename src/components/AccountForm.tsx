@@ -112,7 +112,7 @@ function UserProfileDisplay({ profile }: { profile: UserProfile }) {
       <div className="relative w-full h-64 bg-gradient-to-b from-zinc-800 to-zinc-900 rounded-t-lg overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 to-transparent z-10"></div>
         <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-          <div className="flex items-center">
+          <div className="flex flex-col gap-4 lg:gap-0 lg:flex-row lg:items-center">
             <div className="flex-shrink-0">
               <img
                 src={profile.profilePicture}
@@ -120,7 +120,7 @@ function UserProfileDisplay({ profile }: { profile: UserProfile }) {
                 className="h-24 w-24 rounded-full border-2 border-zinc-700"
               />
             </div>
-            <div className="ml-6">
+            <div className="lg:ml-6">
               <h2 className="text-3xl font-bold text-white">
                 {profile.gameName}
                 <span className="text-zinc-400 text-xl ml-2">#{profile.tagLine}</span>

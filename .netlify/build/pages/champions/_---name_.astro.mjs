@@ -1,5 +1,5 @@
-import { b as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead } from '../../chunks/astro/server_Cx1c5JER.mjs';
-import { $ as $$MarkdownPostLayout } from '../../chunks/MarkdownPostLayout_LUMzz-BQ.mjs';
+import { b as createAstro, c as createComponent, r as renderComponent, a as renderTemplate, m as maybeRenderHead } from '../../chunks/astro/server_CuNeil3z.mjs';
+import { $ as $$MarkdownPostLayout } from '../../chunks/MarkdownPostLayout_BqcjCeKD.mjs';
 import { a as getChampionDataByChampionName, g as getChampionData } from '../../chunks/championUtils_BJNrzxS7.mjs';
 import { useState } from 'preact/hooks';
 import { jsx, jsxs } from 'preact/jsx-runtime';
@@ -16,13 +16,13 @@ function SkinCarousel({
       children: [jsx("img", {
         src: currentSkin.splash,
         alt: currentSkin.name,
-        width: 4e3,
+        width: 3e3,
         height: 2250,
-        class: "block w-full h-auto object-cover"
+        class: "block w-full h-[400px] lg:h-auto object-cover"
       }), jsx("div", {
         class: "absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-900/50 to-transparent"
       }), jsxs("div", {
-        class: "absolute bottom-20 left-0 right-0 flex flex-col flex-start gap-2 overflow-hidden max-w-4xl mx-auto",
+        class: "absolute bottom-20 left-4 right-4 lg:left-0 lg:right-0 flex flex-col flex-start gap-2 overflow-hidden max-w-4xl mx-auto",
         children: [jsxs("div", {
           class: "flex gap-2 items-baseline",
           children: [jsx("h1", {
@@ -41,7 +41,7 @@ function SkinCarousel({
               alt: skin.name,
               width: 100,
               height: 100,
-              class: "rounded-md min-w-[150px] max-h-[100px] object-cover",
+              class: "rounded-md min-w-[100px] max-h-[75px] lg:min-w-[150px] lg:max-h-[100px] object-cover",
               onClick: () => setCurrentSkin(skin)
             })
           }))
@@ -74,14 +74,14 @@ function SpellDisplay({
       class: "text-xl font-medium mb-4",
       children: "Champion Abilities"
     }), jsxs("div", {
-      class: "flex gap-2 mb-6 overflow-x-auto no-scrollbar",
+      class: "flex gap-2 mb-6 overflow-x-auto pb-2",
       children: [jsx("button", {
         onClick: () => handleSpellSelect("passive", passive),
         class: `flex-shrink-0 border ${activeSpell === "passive" ? "border-white grayscale-0" : "border-zinc-800 grayscale-75"} rounded-md transition-all duration-200 hover:grayscale-0`,
         children: jsx("img", {
           src: getSpellImageUrl(passive),
           alt: passive.name,
-          class: "w-14 h-14 rounded-md"
+          class: "w-12 h-12 sm:w-14 sm:h-14 rounded-md"
         })
       }), spells.map((spell, index) => jsx("button", {
         onClick: () => handleSpellSelect(`spell${index}`, spell),
@@ -89,29 +89,30 @@ function SpellDisplay({
         children: jsx("img", {
           src: getSpellImageUrl(spell),
           alt: spell.name,
-          class: "w-14 h-14 rounded-md"
+          class: "w-12 h-12 sm:w-14 sm:h-14 rounded-md"
         })
       }, spell.id))]
     }), jsx("div", {
       class: "bg-zinc-900/40 border border-zinc-800 rounded-lg mb-8",
       children: jsxs("div", {
-        class: "flex items-start gap-6 p-6",
+        class: "flex flex-col sm:flex-row items-start gap-4 sm:gap-6 p-4 sm:p-6",
         children: [jsx("img", {
           src: getSpellImageUrl(currentSpell),
           alt: currentSpell.name,
-          class: "w-16 h-16 rounded-md"
+          class: "w-14 h-14 sm:w-16 sm:h-16 rounded-md"
         }), jsxs("div", {
+          class: "w-full",
           children: [jsxs("div", {
             class: "flex gap-2 items-baseline mb-2",
             children: [jsx("h3", {
-              class: "text-xl font-bold",
+              class: "text-xl font-bold break-words",
               children: currentSpell.name
             }), activeSpell !== "passive" && jsx("span", {
               class: "text-zinc-400 text-sm",
               children: currentSpell.id
             })]
           }), jsx("p", {
-            class: "text-zinc-400 font-thin mb-4",
+            class: "text-zinc-400 font-thin mb-4 break-words",
             children: currentSpell.description
           }), activeSpell !== "passive" && jsxs("div", {
             class: "grid grid-cols-1 md:grid-cols-2 gap-4 text-sm",
@@ -172,12 +173,11 @@ const $$ = createComponent(async ($$result, $$props, $$slots) => {
   const championName = Astro2.params.name;
   const championData = await getChampionDataByChampionName(championName);
   const champion = championData.data[championName];
-  `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion.id}_0.jpg`;
   const skins = champion.skins.map((skin) => ({
     splash: `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion.id}_${skin.num}.jpg`,
     name: skin.name
   }));
-  return renderTemplate`${renderComponent($$result, "MarkdownPostLayout", $$MarkdownPostLayout, { "frontmatter": champion }, { "default": async ($$result2) => renderTemplate` ${renderComponent($$result2, "SkinCarousel", SkinCarousel, { "client:visible": true, "skins": skins, "champion": champion, "client:component-hydration": "visible", "client:component-path": "/Users/dimitar/Desktop/Software_Dev/astro-projects/league-discovery-apis/src/components/SkinCarousel", "client:component-export": "default" })} ${maybeRenderHead()}<div class="flex flex-col gap-10"> <div class="max-w-4xl mx-auto"> <p class="text-zinc-400 font-thin">${champion.lore}</p> </div> ${renderComponent($$result2, "SpellDisplay", SpellDisplay, { "client:visible": true, "spells": champion.spells, "passive": champion.passive, "client:component-hydration": "visible", "client:component-path": "/Users/dimitar/Desktop/Software_Dev/astro-projects/league-discovery-apis/src/components/SpellDisplay", "client:component-export": "default" })} </div> ` })}`;
+  return renderTemplate`${renderComponent($$result, "MarkdownPostLayout", $$MarkdownPostLayout, { "frontmatter": champion }, { "default": async ($$result2) => renderTemplate` ${renderComponent($$result2, "SkinCarousel", SkinCarousel, { "client:visible": true, "skins": skins, "champion": champion, "client:component-hydration": "visible", "client:component-path": "/Users/dimitar/Desktop/Software_Dev/astro-projects/league-discovery-apis/src/components/SkinCarousel", "client:component-export": "default" })} ${maybeRenderHead()}<div class="flex flex-col gap-10 px-4"> <div class="max-w-4xl mx-auto"> <p class="text-zinc-400 font-thin">${champion.lore}</p> </div> ${renderComponent($$result2, "SpellDisplay", SpellDisplay, { "client:visible": true, "spells": champion.spells, "passive": champion.passive, "client:component-hydration": "visible", "client:component-path": "/Users/dimitar/Desktop/Software_Dev/astro-projects/league-discovery-apis/src/components/SpellDisplay", "client:component-export": "default" })} </div> ` })}`;
 }, "/Users/dimitar/Desktop/Software_Dev/astro-projects/league-discovery-apis/src/pages/champions/[...name].astro", void 0);
 
 const $$file = "/Users/dimitar/Desktop/Software_Dev/astro-projects/league-discovery-apis/src/pages/champions/[...name].astro";

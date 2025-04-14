@@ -11,5 +11,12 @@ async function getItemData() {
   itemDataCache = data;
   return itemDataCache;
 }
+async function getItemDataById(itemId) {
+  const itemData = await getItemData();
+  if (!itemData || !itemData.data || !itemData.data[itemId]) {
+    return null;
+  }
+  return itemData.data[itemId];
+}
 
-export { getItemData as g };
+export { getItemData, getItemDataById };

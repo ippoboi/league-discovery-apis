@@ -1,0 +1,53 @@
+---
+const currentPath = Astro.url.pathname;
+---
+
+<div
+  id="mobile-menu"
+  class="fixed inset-0 bg-zinc-900/95 backdrop-blur-sm z-40 flex flex-col items-center justify-center transform translate-y-full transition-transform duration-300"
+>
+  <nav class="flex flex-col items-center gap-8 text-xl">
+    <a
+      href="/"
+      class:list={[
+        'hover:text-zinc-100 transition-colors',
+        currentPath === '/' ? 'text-zinc-100' : 'text-zinc-400',
+      ]}>Home</a
+    >
+    <a
+      href="/champions"
+      class:list={[
+        'hover:text-zinc-100 transition-colors',
+        currentPath === '/champions' ? 'text-zinc-100' : 'text-zinc-400',
+      ]}>Champions</a
+    >
+    <a
+      href="/items"
+      class:list={[
+        'hover:text-zinc-100 transition-colors',
+        currentPath === '/items' ? 'text-zinc-100' : 'text-zinc-400',
+      ]}>Items</a
+    >
+    <a
+      href="/account"
+      class:list={[
+        'hover:text-zinc-100 transition-colors',
+        currentPath === '/account' ? 'text-zinc-100' : 'text-zinc-400',
+      ]}>Account</a
+    >
+  </nav>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    hamburger?.addEventListener('click', () => {
+      document.body.classList.toggle('menu-open');
+      mobileMenu?.classList.toggle('translate-y-full');
+      mobileMenu?.classList.toggle('translate-y-0');
+      hamburger.classList.toggle('is-active');
+    });
+  });
+</script>

@@ -2,8 +2,22 @@
 
 ---
 
-<div class="flex flex-col md:hidden gap-1">
-  <span class="w-4 h-0.5 bg-zinc-300 rounded-full"></span>
-  <span class="w-4 h-0.5 bg-zinc-300 rounded-full"></span>
-  <span class="w-4 h-0.5 bg-zinc-300 rounded-full"></span>
+<div id="hamburger" class="flex flex-col lg:hidden gap-1 cursor-pointer relative z-50">
+  <span class="w-4 h-0.5 bg-zinc-300 rounded-full transition-all duration-300"></span>
+  <span class="w-4 h-0.5 bg-zinc-300 rounded-full transition-all duration-300"></span>
+  <span class="w-4 h-0.5 bg-zinc-300 rounded-full transition-all duration-300"></span>
 </div>
+
+<style>
+  #hamburger.is-active span:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  #hamburger.is-active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  #hamburger.is-active span:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+</style>
