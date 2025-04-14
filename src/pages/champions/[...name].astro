@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import MarkdownPostLayout from '../../layouts/MarkdownPostLayout.astro';
 import { getChampionData, getChampionDataByChampionName } from '../../utils/championUtils';
 import SkinCarousel from '../../components/SkinCarousel';
+import SpellDisplay from '../../components/SpellDisplay';
 
 export async function getStaticPaths() {
   const allChampionsData = await getChampionData();
@@ -31,5 +32,11 @@ const skins = champion.skins.map((skin: any) => ({
 <MarkdownPostLayout frontmatter={champion}>
   <SkinCarousel client:visible skins={skins} champion={champion} />
 
-  <p>{champion.lore}</p>
+  <div class="flex flex-col gap-10">
+    <div class="max-w-4xl mx-auto">
+      <p class="text-zinc-400 font-thin">{champion.lore}</p>
+    </div>
+
+    <SpellDisplay client:visible spells={champion.spells} passive={champion.passive} />
+  </div>
 </MarkdownPostLayout>

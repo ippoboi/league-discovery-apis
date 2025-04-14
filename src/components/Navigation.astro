@@ -24,4 +24,11 @@ const currentPath = Astro.url.pathname;
       currentPath === '/items' ? 'text-zinc-100 ' : 'text-zinc-400',
     ]}>Items</a
   >
+  <a
+    href="/account"
+    class:list={[
+      'hover:text-zinc-100 transition-colors',
+      currentPath === '/account' ? 'text-zinc-100 ' : 'text-zinc-400',
+    ]}>Account</a
+  >
 </div>

@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AccountForm from '../components/AccountForm';
+import '../styles/global.css';
+---
+
+<BaseLayout pageTitle="League Profile">
+  <div class="p-4 pt-20">
+    <div class="mb-8 max-w-4xl mx-auto">
+      <h1 class="text-3xl font-bold text-white">League of Legends Profile</h1>
+      <p class="text-zinc-400 font-thin mt-2">
+        Enter your League of Legends username and tag line to view your profile information.
+      </p>
+    </div>
+
+    <AccountForm client:load />
+  </div>
+</BaseLayout>
