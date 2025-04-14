@@ -4,10 +4,14 @@ import Navigation from './Navigation.astro';
 import ThemeIcon from './ThemeIcon.astro';
 ---
 
-<header>
-  <nav>
-    <Hamburger />
-    <ThemeIcon />
+<header class="sticky top-4 z-10">
+  <nav
+    class="flex justify-end md:justify-between items-center bg-zinc-900/70 backdrop-blur-lg rounded-xl border border-zinc-800 p-4"
+  >
     <Navigation />
+    <div class="flex items-center gap-2">
+      <ThemeIcon />
+      <Hamburger />
+    </div>
   </nav>
 </header>

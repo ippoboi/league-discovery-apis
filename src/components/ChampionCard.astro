@@ -1,0 +1,16 @@
+---
+import { Image } from 'astro:assets';
+
+const { data } = Astro.props;
+
+const imageUrl = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${data.id}_0.jpg`;
+---
+
+<a href={`/champions/${data.name}`} class="relative rounded overflow-hidden">
+  <p
+    class="absolute bottom-1 left-1 text-white bg-gray-900 border border-gray-600 rounded-md px-2 py-0.5"
+  >
+    {data.name}
+  </p>
+  <Image src={imageUrl} alt={data.name + ' splash art'} height={300} width={300} />
+</a>

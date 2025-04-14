@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import tailwindcss from '@tailwindcss/vite';
 
 import preact from '@astrojs/preact';
 
@@ -7,4 +8,7 @@ import preact from '@astrojs/preact';
 export default defineConfig({
   site: 'https://league-discovery-apis.netlify.app',
   integrations: [preact()],
+  vite: {
+    plugins: [tailwindcss()],
+  },
 });
